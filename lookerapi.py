@@ -421,3 +421,39 @@ class LookerApi(object):
          r = self.session.delete(url)
          if r.status_code == requests.codes.ok:
              return r.json()
+
+#GET /groups/{group_id}
+    def get_all_groups(self,fields=''):
+        url = '{}{}'.format(self.host,'groups')
+        print url
+        params = {"fields":fields}
+        r = self.session.get(url,params=params)
+        if r.status_code == requests.codes.ok:
+            return r.json()
+
+#GET /groups/{group_id}
+    def get_group(self,group_id,fields=''):
+        url = '{}{}/{}'.format(self.host,'groups',group_id)
+        print url
+        params = {"fields":fields}
+        r = self.session.get(url,params=params)
+        if r.status_code == requests.codes.ok:
+            return r.json()
+
+#POST /groups
+    def create_group(self,group_name,fields=''):
+        url = '{}{}'.format(self.host,'groups')
+        print url
+        params = json.dumps({'name': group_name})
+        r = self.session.post(url,data=params,params=json.dumps({"fields": fields}))
+        if r.status_code == requests.codes.ok:
+            return r.json()
+
+# /groups/{group_id}/groups
+    def create_group_in_group(self,parent_group_id,child_group_id):
+        url = '{}{}/{}/{}'.format(self.host,'groups',parent_group_id,'groups')
+        print url
+        params = json.dumps({'group_id': child_group_id})
+        r = self.session.post(url,data=params)
+        if r.status_code == requests.codes.ok:
+            return "successful addition of group " + str(parent_group_id)

@@ -33,3 +33,5 @@ Python examples of how to use the Looker API
 |delete_expired_schedules.py|Delete schedules that have an expiry date in the title|Gets a list of all schedules and then checks the title for an expiry date specified in the title.  If the current date is past that date, delete the schedule|
 |model_migration.py|Move a list of looks to use a new model| Illustrates how to update queries associated with looks to migrate a subset of content to a new model|
 |soft_delete_content.py|Soft Delete a List of Dashboards and Associated Looks| Illustrates how to soft delete a dashboard and linked looks|
+|dahsboard_filter_model_swap.py|Update model references in dashboard filter suggestions| Addresses a gap in the content validator to show how to repoint model references tied to dashboard filter suggestions|
+|mirror_existing_groups.py|Mirror all or a subset of groups| Illustrates how to create new groups off existing ones and nest the existing groups in the newly created ones for a 1:1 mapping|
