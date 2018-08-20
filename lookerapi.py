@@ -23,8 +23,7 @@ class LookerApi(object):
     def auth(self):
         url = '{}{}'.format(self.host,'login')
         params = {'client_id':self.token,
-                  'client_secret':self.secret
-                  }
+                  'client_secret':self.secret}
         r = self.session.post(url,params=params)
         access_token = r.json().get('access_token')
         # print access_token
@@ -394,6 +393,32 @@ class LookerApi(object):
          print url
          params = json.dumps({'user_id': user_id})
          r = self.session.post(url,data=params)
+         if r.status_code == requests.codes.ok:
+             return r.json()
+
+# GET spaces
+    def get_all_spaces(self,fields=''):
+         url = '{}{}'.format(self.host,'spaces')
+         print url
+         params = {'fields':fields}
+         r = self.session.get(url,params=params)
+         if r.status_code == requests.codes.ok:
+             return r.json()
+
+# GET content_metadata_access
+    def get_all_content_metadata_access(self,content_metadata_id,fields=''):
+         url = '{}{}'.format(self.host,'content_metadata_access')
+         print url
+         params = {'content_metadata_id':content_metadata_id,'fields':fields}
+         r = self.session.get(url,params=params)
+         if r.status_code == requests.codes.ok:
+             return r.json()
+
+# DELETE content_metadata_access
+    def delete_content_metadata(self,content_metadata_access_id):
+         url = '{}{}/{}'.format(self.host,'content_metadata_access',content_metadata_access_id)
+         print url
+         r = self.session.delete(url)
          if r.status_code == requests.codes.ok:
              return r.json()
 
