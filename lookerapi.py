@@ -457,3 +457,35 @@ class LookerApi(object):
         r = self.session.post(url,data=params)
         if r.status_code == requests.codes.ok:
             return "successful addition of group " + str(parent_group_id)
+
+# POST /users/{user_id}/credentials_email
+    def create_users_email_credentials(self,user_id,email_address):
+        url = '{}{}/{}/{}'.format(self.host,'users',user_id,'credentials_email')
+        print url
+        params = json.dumps({'email': email_address})
+        r = self.session.post(url,data=params)
+        if r.status_code == requests.codes.ok:
+            return r.json()
+
+    def get_users_email_credentials(self,user_id,fields):
+        url = '{}{}/{}/{}'.format(self.host,'users',user_id,'credentials_email')
+        print url
+        params = {"fields":fields}
+        r = self.session.get(url,params=params)
+        if r.status_code == requests.codes.ok:
+            return r.json()
+
+    def get_users_saml_credentials(self,user_id,fields):
+        url = '{}{}/{}/{}'.format(self.host,'users',user_id,'credentials_saml')
+        print url
+        params = {"fields":fields}
+        r = self.session.get(url,params=params)
+        if r.status_code == requests.codes.ok:
+            return r.json()
+
+    def delete_users_saml_credentials(self,user_id):
+        url = '{}{}/{}/{}'.format(self.host,'users',user_id,'credentials_saml')
+        print url
+        r = self.session.delete(url)
+        if r.status_code == requests.codes.ok:
+            return r.json()
