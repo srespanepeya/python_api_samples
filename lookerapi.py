@@ -292,8 +292,8 @@ class LookerApi(object):
         url = '{}{}'.format(self.host,'scheduled_plans')
         # print(url)
         params = {'user_id':user_id}
-	r = self.session.get(url,params=params)
-	if r.status_code == requests.codes.ok:
+        r = self.session.get(url,params=params)
+        if r.status_code == requests.codes.ok:
             return r.json()
 
 #GET /scheduled_plans/look/{dashboard_id}
