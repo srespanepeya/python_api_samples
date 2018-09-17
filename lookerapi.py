@@ -105,8 +105,7 @@ class LookerApi(object):
             # print(" --- running query --- ")
             r = self.session.post(url,data=params)
             # print(url)
-            # print(r.status_code)
-            # print(r)
+            print(r.status_code)
             if r.status_code == requests.codes.ok:
                 return r.json()
 
