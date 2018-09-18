@@ -2,8 +2,8 @@ import yaml ### install the pyyaml package
 from lookerapi import LookerApi
 from datetime import datetime
 from pprint import pprint
-from argparse import ArgumentParser
 import json
+import time
 
 ### ------- HERE ARE PARAMETERS TO CONFIGURE -------
 dashboard_id = 7
@@ -13,7 +13,6 @@ host = 'cs_eng'
 f = open('config.yml')
 params = yaml.load(f)
 f.close()
-
 
 my_host = params['hosts'][host]['host']
 my_secret = params['hosts'][host]['secret']
@@ -25,23 +24,18 @@ looker = LookerApi(host=my_host,
 
 dashboard = looker.get_dashboard(dashboard_id)
 
-with open( 'dashboard.json', 'w') as f:
-    json.dump(dashboard, f, indent = 4)
-
 # Collect dashboard filters
 dashboard_filters = []
-for element in dashboard['dashboard_filters']:
-    dashboard_filter = {}
-    dashboard_filter['id'] = element['id']
-    dashboard_filter['title'] = element['title']
-    dashboard_filter['default_value'] = element['default_value']
-    dashboard_filter['dashboard_id'] = element['dashboard_id']
+filter_params = ['id', 'title', 'default_value', 'dashboard_id']
+for dashboard_filter_object in dashboard['dashboard_filters']:
+    dashboard_filter = {param: dashboard_filter_object[param] for param in filter_params}
     dashboard_filters.append(dashboard_filter)
 
 
-
 # Collect dashboard queries and associated filter listerners
-query_params = ['model', 'view', 'fields', 'pivots', 'filters', 'sorts', 'limit', 'total', 'row_total']
+query_params = ['model', 'view', 'fields', 'pivots', 'filters', 'sorts',
+                'query_timezone', 'limit', 'total', 'row_total', 'fill_fields',
+                'dynamic_fields' ]
 dashboard_elements = []
 for element in dashboard['dashboard_elements']:
     dashboard_element = {}
@@ -50,15 +44,12 @@ for element in dashboard['dashboard_elements']:
         full_query = element['query']
     else:
         full_query = element['look']['query']
-
     # keep the query params we care about
     query = {param: full_query[param] for param in query_params}
     dashboard_element['query'] = query
-
     dashboard_element['filter_listeners'] = [filterable['listen'] for filterable
                     in element['result_maker']['filterables']][0]
     dashboard_elements.append(dashboard_element)
-
 
 # # add default_value to listener array
 for element in dashboard_elements:
@@ -69,6 +60,7 @@ for element in dashboard_elements:
                                 filter_listener['dashboard_filter_name'],
                                     dashboard_filters))[0]['default_value']
         filter_listener['default_value'] = default_value
+
     # apply dashboard filters to queries with default values
     if element['query']['filters'] is None:
         element['query']['filters'] = {}
