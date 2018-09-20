@@ -1,7 +1,7 @@
 import yaml ### install the pyyaml package
 from lookerapi import LookerApi
 from datetime import datetime
-from pprint import pprint 
+from pprint import pprint
 
 
 ### ------- HERE ARE PARAMETERS TO CONFIGURE -------
@@ -33,4 +33,4 @@ pprint(data)
 
 ### ------- Done -------
 
-print "Done"
+print("Done")
