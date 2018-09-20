@@ -17,21 +17,25 @@ Python examples of how to use the Looker API
    3) Click the "New API 3 Key" button to make API 3 credentials for the user.
    4) In the config.yml file, the "Client Secret" on the user page should be copied into the `secret:` string and the Client ID should be copied into the `token:` string. For the `host:` string replace the word `localhost` with your Looker instance domain name (i.e. _companyname_.looker.com).
    5) Make sure your Looker instance is configured to a working API Host URL by going to Admin > API in your Looker instance and checking the API Host URL field. A blank field is the default for Looker to auto-detect the API Host URL.
-- Run any file in the shell with `python <<filename>>`
+- Run any file in the shell with `python <<filename>> <<arguments>>`
 
 ## Scripts
 
 |File|Description|How to|
 |----|----|----|
-|delete_look.py|Illustrates how to delete a look or a list of looks delimited by newlines|Make sure you have the host in your config.yml file and adjust the source look variables at the top of the script.
-|delete_dashboard.py|Illustrated how to delete a dashboard or a list of dashboards delimited by newlines|Make sure you have the host in your config.yml file and adjust the source look variables at the top of the script.
-|get_look.py|Illustrates how to get the data from a look|Make sure you have the host in your config.yml file and adjust the source look variables at the top of the script.|
-|move_look.py|Illustrates how to move a look between servers, or between the same server|Make sure you have both hosts in your config.yml file and adjust the source look, destination space variables at the top of the script.|
-|get_data_dictionary.py|Put together a list of each field, and various attributes in your data model, this outputs a CSV|Make sure your host is configured in the config.yml file. If you change the 'localhost' variable in config.yml also change line 143 of get_data_dictionary.py to reference the proper credentials. The output file from the script is named dictionary.csv in the repository directory.|
-|update_user.py|Update user parameters with a CSV| In the script, reference a CSV which maps individual user IDs to whichever user parameters you would like to update. Use the `/users/{user_id}/credentials_email` endpoint to update email/password login information.|
-|update_static_filter.py|Update a static filter value on a look| Illustrates how to update a static value associated with a filter field|
+|dashboard_filter_model_swap.py|Update model references in dashboard filter suggestions| Addresses a gap in the content validator to show how to repoint model references tied to dashboard filter suggestions. Input dashboards, source model name and destination model name with |
+|delete_dashboard.py|Illustrates how to delete a dashboard or a list of dashboards delimited by newlines|Make sure you have the host in your config.yml file and adjust the source look variables at the top of the script.|
 |delete_expired_schedules.py|Delete schedules that have an expiry date in the title|Gets a list of all schedules and then checks the title for an expiry date specified in the title.  If the current date is past that date, delete the schedule|
-|model_migration.py|Move a list of looks to use a new model| Illustrates how to update queries associated with looks to migrate a subset of content to a new model|
-|soft_delete_content.py|Soft Delete a List of Dashboards and Associated Looks| Illustrates how to soft delete a dashboard and linked looks|
-|dahsboard_filter_model_swap.py|Update model references in dashboard filter suggestions| Addresses a gap in the content validator to show how to repoint model references tied to dashboard filter suggestions|
-|mirror_existing_groups.py|Mirror all or a subset of groups| Illustrates how to create new groups off existing ones and nest the existing groups in the newly created ones for a 1:1 mapping|
+|delete_look.py|Illustrates how to delete a look or a list of looks delimited by newlines|Make sure you have the host in your config.yml file and adjust the source look variables at the top of the script with either a file input or look id.|
+|disable_users.py|Deactivate users based on login threshold|adjust the days_to_disable to deactivate users who have not logged in with email credentials for a certain number of days. |
+|get_data_dictionary.py|Put together a list of each field, and various attributes in your data model, this outputs a CSV|Make sure your host is configured in the config.yml file. If you change the 'localhost' variable in config.yml also change line 143 of get_data_dictionary.py to reference the proper credentials. The output file from the script is named dictionary.csv in the repository directory.|
+|get_look.py|Illustrates how to get the data from a look|Make sure you have the host in your config.yml file and adjust the source look variables at the top of the script.|
+|make_users_spaces_private.py|Update personal spaces to be private to owner| Illustrates how to modify content access. Make sure you have the host in your config.yml file.|
+|mirror_existing_groups.py|Mirror all or a subset of groups| Illustrates how to create new groups off existing ones and nest the existing groups in the newly created ones for a 1:1 mapping. Make sure you have the host in your config.yml file and pass in a comma separated list of groups with the appropriate flag. |
+|model_migration.py|Move a list of looks to use a new model| Illustrates how to update queries associated with looks to migrate a subset of content to a new model. Make sure you have the host in your config.yml file and pass in a comma separated list of looks and destination model with the appropriate flags. |
+|move_look.py|Illustrates how to move a look between servers, or between the same server|Make sure you have both hosts in your config.yml file and adjust the source look, destination space variables at the top of the script.|
+|run_dashboard_queries.py|Runs all queries on a dashboard with default dashboard filters applied| Make sure you have the host in your config.yml file and set variable for dashboard id in script.|
+|saml_nameid_migration.py|Remove saml credentials and update email credential to align with SAML email attribute| Illustrates how to allow for a re-merge based on email if the SAML NameID changes for users. Make sure you have the host in your config.yml file and pass in a comma separated list of users with the appropriate flag.|
+|soft_delete_content.py|Soft Delete a List of Dashboards and Associated Looks| Illustrates how to soft delete a dashboard and linked looks. |
+|update_static_filter.py|Update a static filter value on a look| Illustrates how to update a static value associated with a filter field. Make sure you have the host in your config.yml file and pass in a comma separated list of dashboards with the appropriate flag.|
+|update_user.py|Update user parameters with a CSV| In the script, reference a CSV which maps individual user IDs to whichever user parameters you would like to update. Use the `/users/{user_id}/credentials_email` endpoint to update email/password login information.|

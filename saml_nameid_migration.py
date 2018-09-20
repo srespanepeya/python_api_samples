@@ -27,12 +27,12 @@ looker = LookerApi(host=my_host,
 for user_id in args.users.split(','):
         user_email_info = looker.get_users_email_credentials(user_id=user_id,fields='email')
         user_saml_email_info = looker.get_users_saml_credentials(user_id=user_id,fields='email,saml_user_id')
-        print user_email_info
-        print user_saml_email_info
+        print(user_email_info)
+        print(user_saml_email_info)
         if user_email_info != None:
-            print "not none"
+            print("not none")
             if user_email_info['email'] != user_saml_email_info['email']:
-                print "email misalignment for user " + user_id
+                print("email misalignment for user " + user_id)
             else:
                 looker.delete_users_saml_credentials(user_id=user_id)
         else:

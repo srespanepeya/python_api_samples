@@ -1,60 +1,28 @@
 # -*- coding: UTF-8 -*-
 import yaml
-# from lookerapi import LookerApi
+from lookerapi import LookerApi
 from pprint import pprint as pp
 import json
 import csv
 import requests
 
-# ## LOOKER API CLASS [[ its in the lookerapi object you may be importing! - uncomment the 3rd Line!]]
+### ------- HERE ARE PARAMETERS TO CONFIGURE -------
 
-class LookerApi(object):
+host = 'localhost'
 
-    def __init__(self, token, secret, host):
+### ------- OPEN THE CONFIG FILE and INSTANTIATE API -------
 
-        self.token = token
-        self.secret = secret
-        self.host = host
+f = open('config.yml')
+params = yaml.load(f)
+f.close()
 
-        self.session = requests.Session()
-        self.session.verify = False
-        self.auth()
+my_host = params['hosts'][host]['host']
+my_secret = params['hosts'][host]['secret']
+my_token = params['hosts'][host]['token']
 
-    def auth(self):
-        url = '{}{}'.format(self.host,'login')
-        params = {'client_id':self.token,
-                  'client_secret':self.secret
-                  }
-        r = self.session.post(url,params=params)
-        access_token = r.json().get('access_token')
-        # print access_token
-        self.session.headers.update({'Authorization': 'token {}'.format(access_token)})
-
-# GET /lookml_models/{{NAME}}
-    def get_model(self,model_name="",fields={}):
-        url = '{}{}/{}'.format(self.host,'lookml_models', model_name)
-        print url
-        params = fields
-        r = self.session.get(url,params=params)
-        if r.status_code == requests.codes.ok:
-            return r.json()
-# GET /lookml_models/{{NAME}}
-    def get_model(self,model_name=None,fields={}):
-        url = '{}{}/{}'.format(self.host,'lookml_models', model_name)
-        # print url
-        params = fields
-        r = self.session.get(url,params=params)
-        if r.status_code == requests.codes.ok:
-            return r.json()
-
-# GET /lookml_models/{{NAME}}/explores/{{NAME}}
-    def get_explore(self,model_name=None,explore_name=None,fields={}):
-        url = '{}{}/{}/{}/{}'.format(self.host,'lookml_models', model_name, 'explores', explore_name)
-        print url
-        params = fields
-        r = self.session.get(url,params=params)
-        if r.status_code == requests.codes.ok:
-            return r.json()
+looker = LookerApi(host=my_host,
+                 token=my_token,
+                 secret = my_secret)
 
 
 ## --------- csv writing -------
@@ -110,7 +78,7 @@ def write_fields(explore, fields, model_name =""):
 
 ## --------- csv formatting -------------
 
-csvfile= open('dictionary.csv', 'wb')
+csvfile= open('dictionary.csv', 'w')
 
 w = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 header = ['connection_name',
@@ -132,26 +100,6 @@ header = ['connection_name',
 
 w.writerow(header)
 
-
-
-## --------- API Config -------------
-
-f = open('config.yml')
-params = yaml.load(f)
-f.close()
-
-hostname = 'localhost'
-
-my_host = params['hosts'][hostname]['host']
-my_secret = params['hosts'][hostname]['secret']
-my_token = params['hosts'][hostname]['token']
-
-looker = LookerApi(host=my_host,
-                 token=my_token,
-                 secret = my_secret)
-
-
-
 ## --------- API Calls -------------
 
 ## -- Get all models --
@@ -169,13 +117,12 @@ for model in models:
 		explore=looker.get_explore(model_name, explore_def['name'])
 		# pp(explore)
 		## -- parse explore --
-		
+
 		try:
 			write_fields(explore,'measures', model_name)
 		except:
-			print 'Problem measure fields in ', explore_def['name']
+			print('Problem measure fields in ' + explore_def['name'])
 		try:
 			write_fields(explore,'dimensions', model_name)
 		except:
-			print 'Problem dimension fields in ', explore_def['name']
-
+			print('Problem dimension fields in ' + explore_def['name'])

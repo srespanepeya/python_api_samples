@@ -29,5 +29,5 @@ for space in spaces:
         content_metadata_access = looker.get_all_content_metadata_access(space['content_metadata_id'],fields='id,permission_type,group_id,user_id')
         for access_grant in content_metadata_access:
             if access_grant['user_id'] != space['creator_id']:
-                print "deleting access on space " + str(space['id'])
+                print("deleting access on space " + str(space['id']))
                 looker.delete_content_metadata(access_grant['id'])
