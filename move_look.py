@@ -43,21 +43,21 @@ source_looker = LookerApi(host=my_host,
 ### ------- GET THE SOURCE LOOK -------
 
 look_body = source_looker.get_look_info(source_look_id,'query_id, query, title'	)
-print "---- Source Look Body ----"
+print("---- Source Look Body ----")
 pp(look_body)
 
 
-print "---- Source query ----"
+print("---- Source query ----")
 query_body = source_looker.get_query(look_body['query_id'])
 pp(query_body)
 
 
 ### ------- BUILD THE TARGET LOOK -------
 
-print "---- New query ----"
+print("---- New query ----")
 new_query = dest_looker.create_query(query_body,'id')
 new_query_id = str(new_query['id'])
-print  new_query_id+" is the new query id"
+print(new_query_id + " is the new query id")
 
 new_look = {}
 new_look['space_id'] = destination_space_id
@@ -68,5 +68,4 @@ dest_looker.create_look(new_look)
 
 ### ------- DONE -------
 
-print "Done"
-
+print("Done")

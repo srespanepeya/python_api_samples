@@ -32,9 +32,9 @@ for dashboard_id in args.dashboards.split(','):
     if dashboard_looks:
         looks_to_delete = looks_to_delete + [look['look_id'] for look in dashboard_looks['dashboard_elements']]
     dashboard_updated = looker.update_dashboard(dashboard_id,body=soft_delete,fields='id')
-    pprint("Soft deleted dashboard id " + str(dashboard_updated['id']))
+    print("Soft deleted dashboard id " + str(dashboard_updated['id']))
 
 for look_id in looks_to_delete:
     look_updated = looker.update_look(look_id,body=soft_delete,fields='id')
     if look_updated:
-        pprint("Soft deleted look id " + str(look_updated['id']))
+        print("Soft deleted look id " + str(look_updated['id']))

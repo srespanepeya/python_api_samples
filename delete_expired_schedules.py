@@ -1,22 +1,20 @@
 import yaml ### install the pyyaml package
 from lookerapi import LookerApi
 from datetime import datetime
-from pprint import pprint 
+from pprint import pprint
 import json
 import re
 
 ###############
 # This script builds a list of all schedules for all users
 # and deletes schedules that have an expiry date specified
-# in the title.  Checks for format "DELETE:YYYY-MM-DD" in 
-# title, which can be changed in line 58  
+# in the title.  Checks for format "DELETE:YYYY-MM-DD" in
+# title, which can be changed in line 58
 ##############
 
 ### ------- HERE ARE PARAMETERS TO CONFIGURE -------
 
-look_to_get = 123
 host = 'localhost'
-
 
 ### ------- OPEN THE CONFIG FILE and INSTANTIATE API -------
 
@@ -60,8 +58,8 @@ for attrpair in scheduleattrlist:
 		break
 	match = re.search(r'\d{4}-\d{2}-\d{2}', deletematch.group(0))
 	if match is not None and datetime.strptime(match.group(0), '%Y-%m-%d').date() < datetime.today().date():
-		print "FOUND EXPIRED SCHEDULE...DELETING"
-		looker.delete_schedule(attrpair['id'])			
+		print("FOUND EXPIRED SCHEDULE...DELETING")
+		looker.delete_schedule(attrpair['id'])
 ### ------- Done -------
 
-print "Done"
+print("Done")

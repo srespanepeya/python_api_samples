@@ -41,7 +41,7 @@ pprint(query)
 if query['filters'][filter_field] == old_value:
     query['filters'][filter_field] = new_value
 else:
-    print "no match"
+    print("no match")
 
 
 # # create a new query with the updated query object
