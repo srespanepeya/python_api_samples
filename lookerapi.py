@@ -218,18 +218,19 @@ class LookerApi(object):
     def set_user_role(self,user_id,body=[]):
         url = '{}{}{}{}'.format(self.host,'users/',user_id,'/roles')
         # print("Grabbing User(s) " + str(id))
-        print(url)
+        # print(url)
         body = json.dumps(body)
         r = requests.put(url,data=body,headers=self.head)
         if r.status_code == requests.codes.ok:
             return r.json()
 
 # GET /users/{user_id}/roles
-    def get_user_role(self,id=""):
+    def get_user_role(self,id,fields=""):
         url = '{}{}{}{}'.format(self.host,'users/',id,'/roles')
         # print("Grabbing User(s) " + str(id))
         # print(url)
-        r = self.session.get(url,params={})
+        params = {"fields":fields}
+        r = self.session.get(url,params=params)
         if r.status_code == requests.codes.ok:
             return r.json()
 
