@@ -2,7 +2,7 @@
 Python examples of how to use the Looker API
 
 ## What you can find here
-- A simple Looker API 3.0 SDK
+- A simple Looker API 3.1 SDK
 - A sample config.yml file for collecting API Tokens/Secrets
 - Sample files of various tasks using the API
 
@@ -23,7 +23,7 @@ Python examples of how to use the Looker API
 
 |File|Description|How to|
 |----|----|----|
-|dashboard_filter_model_swap.py|Update model references in dashboard filter suggestions| Addresses a gap in the content validator to show how to repoint model references tied to dashboard filter suggestions. Input dashboards, source model name and destination model name with |
+|dashboard_filter_model_swap.py|Update model references in dashboard filter suggestions| Addresses a gap in the content validator to show how to repoint model references tied to dashboard filter suggestions. Input dashboards, source model name and destination model name to update filter references accordingly. |
 |delete_dashboard.py|Illustrates how to delete a dashboard or a list of dashboards delimited by newlines|Make sure you have the host in your config.yml file and adjust the source look variables at the top of the script.|
 |delete_expired_schedules.py|Delete schedules that have an expiry date in the title|Gets a list of all schedules and then checks the title for an expiry date specified in the title.  If the current date is past that date, delete the schedule|
 |delete_look.py|Illustrates how to delete a look or a list of looks delimited by newlines|Make sure you have the host in your config.yml file and adjust the source look variables at the top of the script with either a file input or look id.|
@@ -39,3 +39,4 @@ Python examples of how to use the Looker API
 |soft_delete_content.py|Soft Delete a List of Dashboards and Associated Looks| Illustrates how to soft delete a dashboard and linked looks. |
 |update_static_filter.py|Update a static filter value on a look| Illustrates how to update a static value associated with a filter field. Make sure you have the host in your config.yml file and pass in a comma separated list of dashboards with the appropriate flag.|
 |update_user.py|Update user parameters with a CSV| In the script, reference a CSV which maps individual user IDs to whichever user parameters you would like to update. Use the `/users/{user_id}/credentials_email` endpoint to update email/password login information.|
+|production_project_catchup.py|Catch a developer up to production code on a project| This addresses a pain in local project import where you want to effectively prevent inherited project access to various tenants. This showcases how to temporarily grant access to a model via a temporary role, switch a users personal branch and revert to production. After this "catchup to prod" is done the temporary role grant is removed. |
