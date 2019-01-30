@@ -220,7 +220,7 @@ class LookerApi(object):
         # print("Grabbing User(s) " + str(id))
         # print(url)
         body = json.dumps(body)
-        r = requests.put(url,data=body,headers=self.head)
+        r = requests.put(url,data=body,headers=self.head,verify=False)
         if r.status_code == requests.codes.ok:
             return r.json()
 
@@ -399,7 +399,8 @@ class LookerApi(object):
          url = '{}{}/{}/{}'.format(self.host,'groups',group_id,'users')
          print(url)
          params = json.dumps({'user_id': user_id})
-         r = self.session.post(url,data=params)
+         r = self.session.post(url,headers=self.head,data=params)
+         print(r.text)
          if r.status_code == requests.codes.ok:
              return r.json()
 
@@ -525,7 +526,7 @@ class LookerApi(object):
         url = '{}{}/{}/{}'.format(self.host,'projects',project_id,'reset_to_production')
         print(url)
         r = self.session.post(url)
-        print(print(r.text))
+        print(r.text)
         print(r.status_code)
         if r.status_code == requests.codes.ok:
             return r.json()
