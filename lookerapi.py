@@ -18,6 +18,7 @@ class LookerApi(object):
 
         self.session = requests.Session()
         self.session.verify = False
+        self.session.trust_env = False
 
         self.auth()
 
@@ -220,7 +221,7 @@ class LookerApi(object):
         # print("Grabbing User(s) " + str(id))
         # print(url)
         body = json.dumps(body)
-        r = requests.put(url,data=body,headers=self.head)
+        r = self.session.put(url,data=body)
         if r.status_code == requests.codes.ok:
             return r.json()
 
@@ -400,6 +401,7 @@ class LookerApi(object):
          print(url)
          params = json.dumps({'user_id': user_id})
          r = self.session.post(url,data=params)
+         print(r.text)
          if r.status_code == requests.codes.ok:
              return r.json()
 
