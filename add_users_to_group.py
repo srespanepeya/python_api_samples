@@ -5,6 +5,8 @@ import csv
 
 # You can execute this script from the command line like this:
 # python3 add_users_to_group.py --filename=/path/to/file.csv
+#
+# Don't forget to set the host value on line 19
 
 parser = argparse.ArgumentParser(description="Load user IDs from the CSV file specified by filename")
 parser.add_argument("-f","--filename", help="Fully-qualified path of CSV file to parse",
@@ -29,8 +31,6 @@ looker = LookerApi(host=my_host,
 
 
 def parse_csv_file_and_add_users_to_groups():
-    global looker
-
     """Parse a CSV file containing a User ID in the first column and a Group ID in the second column and update groups for users"""
 
     f = open(args.filename, 'r', encoding='utf-8-sig') # the encoding may need to be updated depending on your file, see https://stackoverflow.com/a/17912811
