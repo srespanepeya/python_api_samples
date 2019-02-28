@@ -24,6 +24,8 @@ Python examples of how to use the Looker API
 |File|Description|How to|
 |----|----|----|
 |add_users_to_group.py|Add users to groups based on user and group IDs in a CSV file|Make sure you have the host in your config.yml file and pass your CSV file using --filename as a command line argument (see detailed comments in script).|
+|content_cleanup_part1.py|Creates a Look for unused content and email users|This requires the [system activity](https://docs.looker.com/admin-options/system-activity) labs feature to be enabled. Modify the days_since_last_accessed to create a Look which shows unused content for the past N days. Each owner will receive a schedule email notifying them of their unused content.|
+|content_cleanup_part2.py|Soft deletes all content from part1 |Will soft delete all Dashboards and Looks from part1|
 |dashboard_filter_model_swap.py|Update model references in dashboard filter suggestions| Addresses a gap in the content validator to show how to repoint model references tied to dashboard filter suggestions. Input dashboards, source model name and destination model name to update filter references accordingly. |
 |delete_dashboard.py|Illustrates how to delete a dashboard or a list of dashboards delimited by newlines|Make sure you have the host in your config.yml file and adjust the source look variables at the top of the script.|
 |delete_expired_schedules.py|Delete schedules that have an expiry date in the title|Gets a list of all schedules and then checks the title for an expiry date specified in the title.  If the current date is past that date, delete the schedule|
