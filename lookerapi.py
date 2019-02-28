@@ -101,6 +101,16 @@ class LookerApi(object):
         if r.status_code == requests.codes.ok:
             return r.json()
 
+    # POST /merge_queries/
+    def create_merge_query(self,query_body, fields=[]):
+        url = '{}{}'.format(self.host,'merge_queries')
+        # print(url)
+        params = json.dumps(query_body)
+        print(" --- creating merge query --- ")
+        r = self.session.post(url,data=params, params = json.dumps({"fields": fields}))
+        if r.status_code == requests.codes.ok:
+            return r.json()
+
 
       #GET      queries/run/
     def run_query(self,query_id):
@@ -132,7 +142,6 @@ class LookerApi(object):
         print(url)
         params = {limit:100000}
         r = self.session.get(url,params=params, stream=True)
-        print(res.read())
         if r.status_code == requests.codes.ok:
             return r.json()
 
@@ -296,6 +305,15 @@ class LookerApi(object):
         url = '{}{}/{}/{}'.format(self.host,'scheduled_plans', 'dashboard',  dashboard_id)
         # print(url)
         r = self.session.get(url)
+        if r.status_code == requests.codes.ok:
+            return r.json()
+
+#POST /scheduled_plans/run_once
+    def scheduled_plan_run_once(self, body={}):
+        url = '{}{}'.format(self.host,'scheduled_plans/run_once')
+        # print(url)
+        params = json.dumps(body)
+        r = self.session.post(url,data=params)
         if r.status_code == requests.codes.ok:
             return r.json()
 
