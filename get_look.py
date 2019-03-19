@@ -27,7 +27,7 @@ looker = LookerApi(host=my_host,
 
 ### ------- GET AND PRINT THE LOOK -------
 
-data = looker.get_look()
+data = looker.get_look(look_to_get)
 
 pprint(data)
 
