@@ -94,12 +94,12 @@ class LookerApi(object):
         if r.status_code == requests.codes.ok:
             return r.json()
 
-# GET sql_queries/
+# POST sql_queries/
 
     def run_sql_query(self,slug):
         url = '{}{}/{}/run/json'.format(self.host,'sql_queries', slug)
         print(url)
-        r = self.session.get(url)
+        r = self.session.post(url)
         #print(r.text)
         print(r.status_code)
         if r.status_code == requests.codes.ok:
