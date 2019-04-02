@@ -574,5 +574,10 @@ class LookerApi(object):
         print(r.text)
         if r.status_code == requests.codes.ok:
             return r.json()
-        
-        
+
+  #GET /projects/{project_id}     
+    def get_project(self,project_id):
+        url = '{}{}/{}'.format(self.host,'projects',project_id)
+        r = self.session.get(url)
+        if r.status_code == requests.codes.ok:
+            return r.json()
