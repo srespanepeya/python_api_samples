@@ -80,6 +80,32 @@ class LookerApi(object):
         r = self.session.get(url,params=params)
         if r.status_code == requests.codes.ok:
             return r.json()
+        
+# POST /sql_queries/
+
+    def create_sql_query(self,query_body):
+        url = '{}{}'.format(self.host,'sql_queries')
+        # print(url)
+        params = json.dumps(query_body)
+        #print(" --- creating query --- ")
+        r = self.session.post(url,data=params)
+        # print(r.text)
+        #print(r.status_code)
+        if r.status_code == requests.codes.ok:
+            return r.json()
+
+# POST sql_queries/
+
+    def run_sql_query(self,slug):
+        url = '{}{}/{}/run/json'.format(self.host,'sql_queries', slug)
+        print(url)
+        r = self.session.post(url)
+        #print(r.text)
+        print(r.status_code)
+        if r.status_code == requests.codes.ok:
+            return r.json()
+
+
 # GET /queries/
     def get_query(self,query_id,fields=''):
         url = '{}{}/{}'.format(self.host,'queries',query_id)
@@ -548,7 +574,7 @@ class LookerApi(object):
         print(r.text)
         if r.status_code == requests.codes.ok:
             return r.json()
-        
+
   #GET /projects/{project_id}     
     def get_project(self,project_id):
         url = '{}{}/{}'.format(self.host,'projects',project_id)
