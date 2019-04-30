@@ -80,7 +80,7 @@ class LookerApi(object):
         r = self.session.get(url,params=params)
         if r.status_code == requests.codes.ok:
             return r.json()
-        
+
 # POST /sql_queries/
 
     def create_sql_query(self,query_body):
@@ -474,8 +474,15 @@ class LookerApi(object):
          r = self.session.delete(url)
          if r.status_code == requests.codes.ok:
              return r.json()
+# GET content_validation
+    def get_content_validation(self, fields=''):
+        url = '{}{}'.format(self.host,'content_validation')
+        params = {'fields':fields}
+        r = self.session.get(url)
+        if r.status_code == requests.codes.ok:
+            return r.json()
 
-#GET /groups/{group_id}
+# GET /groups/{group_id}
     def get_all_groups(self,fields=''):
         url = '{}{}'.format(self.host,'groups')
         print(url)
@@ -575,7 +582,7 @@ class LookerApi(object):
         if r.status_code == requests.codes.ok:
             return r.json()
 
-  #GET /projects/{project_id}     
+  #GET /projects/{project_id}
     def get_project(self,project_id):
         url = '{}{}/{}'.format(self.host,'projects',project_id)
         r = self.session.get(url)
