@@ -45,7 +45,8 @@ for item in broken_content:
     dashboard_name = item['dashboard']['title']
     space_id =  item['dashboard']['space']['id']
     space_name = item['dashboard']['space']['name']
-    dashboard_element = item['dashboard_element']['title']
+    dashboard_element = item['dashboard_element']
+    dashboard_element = dashboard_element['title'] if dashboard_element is not None else None
     errors = item['errors']
     dashboard_url =  '{}/dashboards/{}'.format(host_url,
                                                dashboard_id
