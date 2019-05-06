@@ -458,6 +458,15 @@ class LookerApi(object):
          if r.status_code == requests.codes.ok:
              return r.json()
 
+# GET spaces/{space_id}
+    def get_space(self,space_id,fields=''):
+        url = '{}{}/{}'.format(self.host,'spaces',space_id)
+        print(url)
+        params = {'fields':fields}
+        r = self.session.get(url,params=params)
+        if r.status_code == requests.codes.ok:
+            return r.json()
+
 # GET content_metadata_access
     def get_all_content_metadata_access(self,content_metadata_id,fields=''):
          url = '{}{}'.format(self.host,'content_metadata_access')
