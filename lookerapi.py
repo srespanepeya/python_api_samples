@@ -464,6 +464,7 @@ class LookerApi(object):
         print(url)
         params = {'fields':fields}
         r = self.session.get(url,params=params)
+        print(r.status_code)
         if r.status_code == requests.codes.ok:
             return r.json()
 
