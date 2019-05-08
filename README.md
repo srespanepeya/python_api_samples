@@ -43,14 +43,4 @@ Python examples of how to use the Looker API
 |update_filters_and_run_query.py|Update a filter value on a look| Illustrates how to update a static value associated with a filter field.|
 |update_user.py|Update user parameters with a CSV| In the script, reference a CSV which maps individual user IDs to whichever user parameters you would like to update. Use the `/users/{user_id}/credentials_email` endpoint to update email/password login information.|
 |production_project_catchup.py|Catch a developer up to production code on a project| This addresses a pain in local project import where you want to effectively prevent inherited project access to various tenants. This showcases how to temporarily grant access to a model via a temporary role, switch a users personal branch and revert to production. After this "catchup to prod" is done the temporary role grant is removed. |
-|run_content_validator.py| Run the content validator and export information about broken content to a specified csv. The following fields are returned:
-- type (look/dashboard)
-- name
-- dashboard_element
-- url
-- space_name
-- parent_space_name
-- space_url
-- parent_space_url
-- errors
-| **Only works with v. 3.1 of the API:** Make sure the host is set to https://<hostname>.looker.com:19999/api/3.1/ in `config.yml` . Set `output_csv_name` to the name of the file that you'd like to export to.
+|run_content_validator.py| Run the content validator and export information about broken content to a specified csv. The following fields are returned: type (look/dashboard), name, dashboard_element, url, space_name, parent_space_name, space_url, parent_space_url, errors| **Only works with v. 3.1 of the API:** Make sure the host is set to https://<hostname>.looker.com:19999/api/3.1/ in `config.yml` . Set `output_csv_name` to the name of the file that you'd like to export to.|
