@@ -3,7 +3,7 @@ import yaml ### install the pyyaml package
 from lookerapi import LookerApi
 from pprint import pprint
 
-### in progress
+
 ### Requires API v. 3.1 -- set this in config.yml
 
 ### ------- HERE ARE PARAMETERS TO CONFIGURE -------
