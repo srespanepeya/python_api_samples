@@ -8,7 +8,7 @@ from pprint import pprint
 
 ### ------- HERE ARE PARAMETERS TO CONFIGURE -------
 
-host = 'girlscouts'
+host = 'cse'
 output_csv_name = 'output.csv'
 
 ### ------- OPEN THE CONFIG FILE and INSTANTIATE API -------
@@ -97,6 +97,7 @@ try:
         writer.writeheader()
         for data in output:
             writer.writerow(data)
+    print('Error information outputed to {}'.format(output_csv_name))
 except IOError:
     print("I/O error")
 
