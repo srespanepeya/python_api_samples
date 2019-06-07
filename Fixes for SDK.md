@@ -20,13 +20,13 @@
 **Manually changing dynamic fields**
 * First concatenate all of the strings: `new_string = ''.join([s for s in list_of_strings])`
 * Then parse it into json using `json.loads(new_string)`
-* _**Note** that this won't work on `NoneType` objects, so only apply this if_ `dynamic_fields is not None`
+* _**Note** that this won't work on `NoneType` objects, so only apply this_ `if dynamic_fields is not None`
   
 
 **Manually changing vis_config**
 * Iterate through the vis config dict and tell python to correctly convert any dict or list that has been saved as a string
 * The fastest way to do this is to tell python to literally evaluate the strings, converting them to objects
-* _**Note**_ `eval` can be dangerous and should only be used on code you know is not malicious. You can also use `from ast import literal_eval` which is safer__
+* _**Note** `eval` can be dangerous and should only be used on code you know is not malicious. You can also use `from ast import literal_eval` which is safer_
 
 ```
 for k, v in vis_config_object.items():
