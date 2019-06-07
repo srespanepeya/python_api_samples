@@ -19,13 +19,7 @@
 * Alternatively, apply this code directly to the query model in the generated SDK:
     * _**Note** there is a chance this may cause unexpected behaviour elsewhere in the SDK_
      _**Note** changes made to the SDK will be overwritten next time you regenerate the swagger code_
-    * Go to `python_sdk/looker/models/query.py` and change the `dynamic_fields` setter (line 557-565), adding this:
-
-```
-if dynamic_fields is not None:
-    dynamic_fields = ''.join([f for f in dynamic_fields])
-```
-
+    * Go to `python_sdk/looker/models/query.py` and change `self.swagger_types` so that `'dynamic_fields': 'object'` in line 59
 
 ### 2. Fix a known problem with vis_config in the Query class
 **The Problem**
