@@ -3,6 +3,7 @@ import requests
 from pprint import pprint as pp
 import json
 import re
+import urllib.request
 
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
@@ -17,6 +18,7 @@ class LookerApi(object):
 
         self.session = requests.Session()
         self.session.verify = False
+        self.session.trust_env = False
 
         self.auth()
 
@@ -27,8 +29,21 @@ class LookerApi(object):
         r = self.session.post(url,params=params)
         access_token = r.json().get('access_token')
         # print(access_token)
-        self.session.headers.update({'Authorization': 'token {}'.format(access_token)})
+        head = {'Authorization': 'token {}'.format(access_token)}
+        self.head = head
+        self.session.headers.update(head)
 
+#POST /login/{user_id}
+    def login_user(self,user_id):
+        url = '{}{}/{}'.format(self.host,'login',user_id)
+        print(url)
+        r = self.session.post(url)
+        print('login user:')
+        print(r.json())
+        access_token = r.json().get('access_token')
+        self.session.headers.update({'Authorization': 'token {}'.format(access_token)})
+        if r.status_code == requests.codes.ok:
+            return r.json()
 
 # POST /dashboards/{dashboard_id}/prefetch
     def create_prefetch(self, dashboard_id, ttl):
@@ -65,6 +80,32 @@ class LookerApi(object):
         r = self.session.get(url,params=params)
         if r.status_code == requests.codes.ok:
             return r.json()
+
+# POST /sql_queries/
+
+    def create_sql_query(self,query_body):
+        url = '{}{}'.format(self.host,'sql_queries')
+        # print(url)
+        params = json.dumps(query_body)
+        #print(" --- creating query --- ")
+        r = self.session.post(url,data=params)
+        # print(r.text)
+        #print(r.status_code)
+        if r.status_code == requests.codes.ok:
+            return r.json()
+
+# POST sql_queries/
+
+    def run_sql_query(self,slug):
+        url = '{}{}/{}/run/json'.format(self.host,'sql_queries', slug)
+        print(url)
+        r = self.session.post(url)
+        #print(r.text)
+        print(r.status_code)
+        if r.status_code == requests.codes.ok:
+            return r.json()
+
+
 # GET /queries/
     def get_query(self,query_id,fields=''):
         url = '{}{}/{}'.format(self.host,'queries',query_id)
@@ -83,6 +124,16 @@ class LookerApi(object):
         r = self.session.post(url,data=params, params = json.dumps({"fields": fields}))
         # print(r.text)
         # print(r.status_code)
+        if r.status_code == requests.codes.ok:
+            return r.json()
+
+    # POST /merge_queries/
+    def create_merge_query(self,query_body, fields=[]):
+        url = '{}{}'.format(self.host,'merge_queries')
+        # print(url)
+        params = json.dumps(query_body)
+        print(" --- creating merge query --- ")
+        r = self.session.post(url,data=params, params = json.dumps({"fields": fields}))
         if r.status_code == requests.codes.ok:
             return r.json()
 
@@ -191,7 +242,6 @@ class LookerApi(object):
         if r.status_code == requests.codes.ok:
             return r.json()
 
-
 # GET /user
     def get_current_user(self):
         url = '{}{}'.format(self.host,'user')
@@ -201,21 +251,22 @@ class LookerApi(object):
             return r.json()
 
 # PUT /users/{user_id}/roles
-    def set_user_role(self,id="", body={}):
-        url = '{}{}{}{}'.format(self.host,'users/',id,'/roles')
+    def set_user_role(self,user_id,body=[]):
+        url = '{}{}{}{}'.format(self.host,'users/',user_id,'/roles')
         # print("Grabbing User(s) " + str(id))
         # print(url)
-        params = json.dumps(body)
-        r = self.session.post(url,params=params)
+        body = json.dumps(body)
+        r = self.session.put(url,data=body)
         if r.status_code == requests.codes.ok:
             return r.json()
 
 # GET /users/{user_id}/roles
-    def get_user_role(self,id=""):
+    def get_user_role(self,id,fields=""):
         url = '{}{}{}{}'.format(self.host,'users/',id,'/roles')
         # print("Grabbing User(s) " + str(id))
         # print(url)
-        r = self.session.get(url,params={})
+        params = {"fields":fields}
+        r = self.session.get(url,params=params)
         if r.status_code == requests.codes.ok:
             return r.json()
 
@@ -226,7 +277,6 @@ class LookerApi(object):
         r = self.session.get(url,params={})
         if r.status_code == requests.codes.ok:
             return r.json()
-
 
 # PATCH /users/{user_id}/access_filters/{access_filter_id}
     def update_access_filter(self, user_id = 0, access_filter_id = 0, body={}):
@@ -240,7 +290,6 @@ class LookerApi(object):
         params = json.dumps(body)
         r = self.session.post(url,data=params)
         return r.json()
-
 
 # GET /users/me
     def get_me(self):
@@ -285,12 +334,20 @@ class LookerApi(object):
         if r.status_code == requests.codes.ok:
             return r.json()
 
+#POST /scheduled_plans/run_once
+    def scheduled_plan_run_once(self, body={}):
+        url = '{}{}'.format(self.host,'scheduled_plans/run_once')
+        # print(url)
+        params = json.dumps(body)
+        r = self.session.post(url,data=params)
+        if r.status_code == requests.codes.ok:
+            return r.json()
 
 #GET /scheduled_plans
-    def get_all_schedules(self, user_id=False):
+    def get_all_schedules(self, user_id=False,fields=False):
         url = '{}{}'.format(self.host,'scheduled_plans')
         # print(url)
-        params = {'user_id':user_id}
+        params = {'user_id':user_id,'fields':fields}
         r = self.session.get(url,params=params)
         if r.status_code == requests.codes.ok:
             return r.json()
@@ -298,11 +355,10 @@ class LookerApi(object):
 #GET /scheduled_plans/look/{dashboard_id}
     def get_look_schedule(self,look_id=0):
         url = '{}{}/{}/{}'.format(self.host,'scheduled_plans', 'look',  look_id)
-        # print(url)
+        print(url)
         r = self.session.get(url)
         if r.status_code == requests.codes.ok:
             return r.json()
-
 
 # GET /datagroups
     def get_datagroups(self):
@@ -310,8 +366,6 @@ class LookerApi(object):
         r = self.session.get(url)
         if r.status_code == requests.codes.ok:
             return r.json()
-
-
 
 #PATCH /scheduled_plans/{scheduled_plan_id}
     def update_schedule(self, plan_id, body={}):
@@ -323,7 +377,6 @@ class LookerApi(object):
         # pp(r.request.url)
         # pp(r.request.body)
         return r.json()
-
 
     def sql_runner(self):
         connection_id = "looker"
@@ -392,6 +445,7 @@ class LookerApi(object):
          print(url)
          params = json.dumps({'user_id': user_id})
          r = self.session.post(url,data=params)
+         print(r.text)
          if r.status_code == requests.codes.ok:
              return r.json()
 
@@ -403,6 +457,16 @@ class LookerApi(object):
          r = self.session.get(url,params=params)
          if r.status_code == requests.codes.ok:
              return r.json()
+
+# GET spaces/{space_id}
+    def get_space(self,space_id,fields=''):
+        url = '{}{}/{}'.format(self.host,'spaces',space_id)
+        print(url)
+        params = {'fields':fields}
+        r = self.session.get(url,params=params)
+        print(r.status_code)
+        if r.status_code == requests.codes.ok:
+            return r.json()
 
 # GET content_metadata_access
     def get_all_content_metadata_access(self,content_metadata_id,fields=''):
@@ -420,8 +484,15 @@ class LookerApi(object):
          r = self.session.delete(url)
          if r.status_code == requests.codes.ok:
              return r.json()
+# GET content_validation
+    def get_content_validation(self, fields=''):
+        url = '{}{}'.format(self.host,'content_validation')
+        params = {'fields':fields}
+        r = self.session.get(url)
+        if r.status_code == requests.codes.ok:
+            return r.json()
 
-#GET /groups/{group_id}
+# GET /groups/{group_id}
     def get_all_groups(self,fields=''):
         url = '{}{}'.format(self.host,'groups')
         print(url)
@@ -486,5 +557,44 @@ class LookerApi(object):
         url = '{}{}/{}/{}'.format(self.host,'users',user_id,'credentials_saml')
         print(url)
         r = self.session.delete(url)
+        if r.status_code == requests.codes.ok:
+            return r.json()
+
+    def update_session_workspace(self):
+        url = '{}{}'.format(self.host,'session')
+        print(url)
+        r = self.session.get(url)
+        print(r.json())
+        if r.json()['workspace_id'] == "production":
+            json_body = {'workspace_id': "dev"}
+        else:
+            json_body = {'workspace_id': "production"}
+        body = json.dumps(json_body)
+        r = self.session.patch(url,data=body)
+        if r.status_code == requests.codes.ok:
+            return r.json()
+
+    def switch_git_branch(self,project_name,branch_name):
+        url = '{}{}/{}/{}'.format(self.host,'projects',project_name,'git_branch')
+        print(url)
+        params = json.dumps({'name': branch_name})
+        r = self.session.put(url,data=params)
+        print(r.text)
+        if r.status_code == requests.codes.ok:
+            return r.json()
+
+#POSt POST /projects/{project_id}/reset_to_remote
+    def reset_to_production(self,project_id):
+        url = '{}{}/{}/{}'.format(self.host,'projects',project_id,'reset_to_production')
+        print(url)
+        r = self.session.post(url)
+        print(r.text)
+        if r.status_code == requests.codes.ok:
+            return r.json()
+
+  #GET /projects/{project_id}
+    def get_project(self,project_id):
+        url = '{}{}/{}'.format(self.host,'projects',project_id)
+        r = self.session.get(url)
         if r.status_code == requests.codes.ok:
             return r.json()

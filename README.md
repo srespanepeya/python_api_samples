@@ -2,7 +2,7 @@
 Python examples of how to use the Looker API
 
 ## What you can find here
-- A simple Looker API 3.0 SDK
+- A simple Looker API 3.1 SDK
 - A sample config.yml file for collecting API Tokens/Secrets
 - Sample files of various tasks using the API
 
@@ -23,7 +23,10 @@ Python examples of how to use the Looker API
 
 |File|Description|How to|
 |----|----|----|
-|dashboard_filter_model_swap.py|Update model references in dashboard filter suggestions| Addresses a gap in the content validator to show how to repoint model references tied to dashboard filter suggestions. Input dashboards, source model name and destination model name with |
+|add_users_to_group.py|Add users to groups based on user and group IDs in a CSV file|Make sure you have the host in your config.yml file and pass your CSV file using --filename as a command line argument (see detailed comments in script).|
+|content_cleanup_part1.py|Creates a Look for unused content and email users|This requires the [system activity](https://docs.looker.com/admin-options/system-activity) labs feature to be enabled. Modify the days_since_last_accessed to create a Look which shows unused content for the past N days. Each owner will receive a schedule email notifying them of their unused content.|
+|content_cleanup_part2.py|Soft deletes all content from part1 |Will soft delete all Dashboards and Looks from part1|
+|dashboard_filter_model_swap.py|Update model references in dashboard filter suggestions| Addresses a gap in the content validator to show how to repoint model references tied to dashboard filter suggestions. Input dashboards, source model name and destination model name to update filter references accordingly. |
 |delete_dashboard.py|Illustrates how to delete a dashboard or a list of dashboards delimited by newlines|Make sure you have the host in your config.yml file and adjust the source look variables at the top of the script.|
 |delete_expired_schedules.py|Delete schedules that have an expiry date in the title|Gets a list of all schedules and then checks the title for an expiry date specified in the title.  If the current date is past that date, delete the schedule|
 |delete_look.py|Illustrates how to delete a look or a list of looks delimited by newlines|Make sure you have the host in your config.yml file and adjust the source look variables at the top of the script with either a file input or look id.|
@@ -38,5 +41,8 @@ Python examples of how to use the Looker API
 |saml_nameid_migration.py|Remove saml credentials and update email credential to align with SAML email attribute| Illustrates how to allow for a re-merge based on email if the SAML NameID changes for users. Make sure you have the host in your config.yml file and pass in a comma separated list of users with the appropriate flag.|
 |soft_delete_content.py|Soft Delete a List of Dashboards and Associated Looks| Illustrates how to soft delete a dashboard and linked looks. |
 |spaces_group_user_access.py|Output a pandas dataframe of top level spaces showing the Group and User access to those spaces as well as any other spaces that are Admin-only or have inherited their permission from Shared. |
-|update_static_filter.py|Update a static filter value on a look| Illustrates how to update a static value associated with a filter field. Make sure you have the host in your config.yml file and pass in a comma separated list of dashboards with the appropriate flag.|
+|update_filters_and_run_query.py|Update a filter value on a look| Illustrates how to update a static value associated with a filter field.|
 |update_user.py|Update user parameters with a CSV| In the script, reference a CSV which maps individual user IDs to whichever user parameters you would like to update. Use the `/users/{user_id}/credentials_email` endpoint to update email/password login information.|
+|production_project_catchup.py|Catch a developer up to production code on a project| This addresses a pain in local project import where you want to effectively prevent inherited project access to various tenants. This showcases how to temporarily grant access to a model via a temporary role, switch a users personal branch and revert to production. After this "catchup to prod" is done the temporary role grant is removed. |
+|run_content_validator.py| Run the content validator and export information about broken content to a specified csv. The following fields are returned: type (look/dashboard), name, dashboard_element, url, space_name, parent_space_name, space_url, parent_space_url, errors| **Only works with v. 3.1 of the API:** Make sure the host is set to https://<hostname>.looker.com:19999/api/3.1/ in `config.yml` . Set `output_csv_name` to the name of the file that you'd like to export to.|
+|pause_resume_schedules.py|Pause or resume scheduleds| This utility selectively pauses and restores scheduled plans. Plans are 'paused' by setting them to run on Feb. 31, a date/time that does not exist.|

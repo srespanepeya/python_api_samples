@@ -1,13 +1,13 @@
 import yaml ### install the pyyaml package
 from lookerapi import LookerApi
-from datetime import datetime
-from pprint import pprint
+import csv
+import json
 
 
 ### ------- HERE ARE PARAMETERS TO CONFIGURE -------
 
-look_to_get = 123
-host = 'localhost'
+host = ''
+csv_file = ''
 
 
 ### ------- OPEN THE CONFIG FILE and INSTANTIATE API -------
@@ -25,12 +25,17 @@ looker = LookerApi(host=my_host,
                  secret = my_secret)
 
 
-### ------- GET AND PRINT THE LOOK -------
+def read_csv(file):
+    f = open(file, 'rb')
+    reader = csv.reader(f)
+    header = reader.next()
+    output = [dict(zip(header, map(str, row))) for row in reader]
+    return output
 
-data = looker.get_look(look_to_get)
+data = read_csv(csv_file)
 
-pprint(data)
-
-### ------- Done -------
-
-print("Done")
+for i  in data:
+    user_id = i['user_id']
+    # del i['user_id']
+    print i
+    looker.update_user(user_id, i)
