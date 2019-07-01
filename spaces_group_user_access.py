@@ -28,7 +28,7 @@ from pprint import pprint
 
 ### ------- HERE ARE PARAMETERS TO CONFIGURE -------
 
-host = 'teach'
+host = 'saleseng'
 
 ### ------- OPEN THE CONFIG FILE and INSTANTIATE API -------
 
@@ -51,6 +51,7 @@ pd.set_option('display.expand_frame_repr', False)
 spaces = \
 looker.get_all_spaces(fields='id,is_personal,creator_id,is_personal_descendant,content_metadata_id,name'
                       )
+
 spaces_content_metadata_ids = {}
 
 spacejson = json.loads(json.dumps(spaces))
@@ -116,6 +117,7 @@ for (key, value) in spaces_content_metadata_ids.iteritems():
 	                           columns={'permission_type': 'access',
 	                           'content_metadata_id': 'cmid',
 	                           'name': 'space_name'})
+
 	if df1.empty:
 
 	    # if the dataframe is empty, it either means that there's 0 groups/users and only Admins can access or the space has inherited permissions from a parent (likely Shared) space
@@ -130,10 +132,8 @@ for (key, value) in spaces_content_metadata_ids.iteritems():
 	    list_of_dataframes.append(pd.merge(pd.merge(df_spaces_filtered,
 	                              df1, on=['cmid']), groupsdf,
 	                              on=['group_id']))
-
-	pd.merge(pd.merge(df_spaces_filtered, df1, on=['cmid']), groupsdf,
-	     on=['group_id'])
-	new_clean_dfs = pd.concat(list_of_dataframes)
+		
+new_clean_dfs = pd.concat(list_of_dataframes)
 print new_clean_dfs
 print 'Space Ids', inheriting_space_ids, \
 'inherit their access from the Shared Space'
