@@ -28,7 +28,7 @@ from pprint import pprint
 
 ### ------- HERE ARE PARAMETERS TO CONFIGURE -------
 
-host = 'saleseng'
+host = 'localhost'
 
 ### ------- OPEN THE CONFIG FILE and INSTANTIATE API -------
 
@@ -96,7 +96,7 @@ groupsdf = pd.DataFrame(groups, columns=['id', 'name', 'user_count'
 
 print 'All Spaces: \n', df_spaces_filtered
 print '+---------------+---------------+---------------+ \n'
-print 'Each Top Level Space and user/group access levels \n'
+print 'Generating each Top Level Space and user/group access levels... \n'
 
 # print spaces_content_metadata_ids, non_personal_descendant_ids
 # Put all the dataframes in a list so we can concatenate at the end using pd.concat and get rid of headers
@@ -135,7 +135,10 @@ for (key, value) in spaces_content_metadata_ids.iteritems():
 		
 new_clean_dfs = pd.concat(list_of_dataframes)
 print new_clean_dfs
+
+print '+---------------+---------------+---------------+ \n'
+
 print 'Space Ids', inheriting_space_ids, \
-'inherit their access from the Shared Space'
+'inherit their access settings from the Shared Space.'
 print 'Space Ids', admin_only_access_space_ids, \
 'are all Admin-only access. No Group or User has been explicitly added to this space'
