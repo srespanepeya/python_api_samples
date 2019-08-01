@@ -222,6 +222,20 @@ class LookerApi(object):
         if r.status_code == requests.codes.ok:
             return r.json()
 
+# GET /user_attributes
+    def get_user_attributes(self,id="",attribute_id=""):
+        url = '{}{}'.format(self.host,'user_attributes')
+        r = self.session.get(url)
+        if r.status_code == requests.codes.ok:
+            return r.json()
+
+# GET /users/id/attribute_values
+    def get_user_attribute_values(self,id="",attribute_id=""):
+        url = '{}{}{}{}'.format(self.host,'users/',id,'/attribute_values')
+        params = {"user_attribute_ids":attribute_id}
+        r = self.session.get(url,params=params)
+        if r.status_code == requests.codes.ok:
+            return r.json()
 
 # PATCH /users/id
     def update_user(self,id="",body={}):
