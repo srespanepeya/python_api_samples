@@ -139,8 +139,6 @@ def write_fields(explore, model_name =""):
 my_model_name = "Sales_Orders"
 my_explore_name = "order"
 
-
-
 ## -- Get all models --
 models = looker.get_models()
 for model in models:
@@ -161,9 +159,4 @@ for model in models:
 				super_explore = looker.get_model_explore(model_name,explore_name)
 			 # try:
 				write_fields(super_explore, model_name)
-			# # except:
-			# # 	print('Problem measure fields in ' + super_explore.name)
-			# # try:
-			# # 	write_fields(explore,'dimensions', model_name)
-			# # except:
-			# # 	print('Problem dimension fields in ' + explore_def['name'])
+
