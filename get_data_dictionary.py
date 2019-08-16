@@ -136,6 +136,10 @@ def write_fields(explore, model_name =""):
 		w.writerow(rowout)
 
 # ## --------- API Calls -------------
+my_model_name = "prueba_Gitte"
+my_explore_name = ""
+
+
 
 ## -- Get all models --
 models = looker.get_models()
