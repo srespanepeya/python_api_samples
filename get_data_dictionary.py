@@ -136,8 +136,8 @@ def write_fields(explore, model_name =""):
 		w.writerow(rowout)
 
 # ## --------- API Calls -------------
-my_model_name = "prueba_Gitte"
-my_explore_name = ""
+my_model_name = "Sales_Orders"
+my_explore_name = "order"
 
 
 
@@ -146,7 +146,7 @@ models = looker.get_models()
 for model in models:
 	model_name = model.name
 
-	if model_name == "prueba_Gitte":
+	if model_name == my_model_name:
     		
     		
 		print("-----------------------------------------------")
@@ -156,7 +156,7 @@ for model in models:
 		for explore in model.explores:
 			#print(explore)
 			explore_name = explore.name
-			if explore_name =="fact_payment":
+			if explore_name ==my_explore_name:
 				print("--->Model:{0}---Explore:{1}".format(model_name,explore_name))
 				super_explore = looker.get_model_explore(model_name,explore_name)
 			 # try:
