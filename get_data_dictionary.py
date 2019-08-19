@@ -26,8 +26,15 @@ looker = PeyaLookerApi(host=my_host,token=my_token,secret = my_secret)
 ## --------- csv writing -------
 
 def write_fields(explore, model_name =""):
-# --------- csv formatting -------------
-	csvfile= open('dictionary.csv', 'w',newline='')
+	### First, compile the fields you need for your row
+	explore_name = explore.name
+	explore_model_name = model_name
+	explore_fields=explore.fields
+	WINDOWS_LINE_ENDING = '\r\n'
+	UNIX_LINE_ENDING = '\n'
+	
+	# --------- csv formatting -------------
+	csvfile= open('looker_{0}_{1}.csv'.format(explore_name,explore_model_name), 'w',newline='')
 	w = csv.writer(csvfile, delimiter='|', quotechar='"', quoting=csv.QUOTE_ALL)
 	header = ['connection_name',
 				'field_type',
@@ -47,12 +54,7 @@ def write_fields(explore, model_name =""):
 				'source']
 	w.writerow(header)
 
-	### First, compile the fields you need for your row
-	explore_name = explore.name
-	explore_model_name = model_name
-	explore_fields=explore.fields
-	WINDOWS_LINE_ENDING = '\r\n'
-	UNIX_LINE_ENDING = '\n'
+
 	try:
 		connection_name = str(explore.connection_name)
 	except:
@@ -128,7 +130,7 @@ def write_fields(explore, model_name =""):
 		rowout.append(hidden)
 		rowout.append(label)
 		rowout.append(label_short)
-		rowout.append(description)
+		rowout.append(description.replace(WINDOWS_LINE_ENDING,' ').replace(UNIX_LINE_ENDING,' '))
 		rowout.append(sql.replace(WINDOWS_LINE_ENDING,' ').replace(UNIX_LINE_ENDING,' ').replace('\"',"\\\\"))
 		rowout.append(ftype)
 		rowout.append(value_format)
@@ -136,8 +138,8 @@ def write_fields(explore, model_name =""):
 		w.writerow(rowout)
 
 # ## --------- API Calls -------------
-my_model_name = "Sales_Orders"
-my_explore_name = "order"
+my_model_name = "BigQuery_Model"
+my_explore_name = "user_interaction"
 
 ## -- Get all models --
 models = looker.get_models()
