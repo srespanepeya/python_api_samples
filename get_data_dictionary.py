@@ -93,7 +93,7 @@ def write_fields(explore, model_name =""):
 		rowout.append(label)
 		rowout.append(label_short)
 		rowout.append(description)
-		rowout.append(sql.replace(WINDOWS_LINE_ENDING,' ').replace(UNIX_LINE_ENDING,' ').replace('\"',"\\\\"))
+		rowout.append(sql.replace(WINDOWS_LINE_ENDING,' ').replace(UNIX_LINE_ENDING,' ').replace('\"',"\'"))
 		rowout.append(ftype)
 		rowout.append(value_format)
 		rowout.append(source)
