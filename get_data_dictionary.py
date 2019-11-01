@@ -6,26 +6,14 @@ import json
 import csv
 import requests
 
-### ------- HERE ARE PARAMETERS TO CONFIGURE -------
 
-host = 'peya-looker'
 
-### ------- OPEN THE CONFIG FILE and INSTANTIATE API -------
-
-f = open('config.yml')
-params = yaml.load(f)
-f.close()
-
-my_host = params['hosts'][host]['host']
-my_secret = params['hosts'][host]['secret']
-my_token = params['hosts'][host]['token']
-
-looker = PeyaLookerApi(host=my_host,token=my_token,secret = my_secret)
+looker = PeyaLookerApi()
 
 
 ## --------- csv writing -------
 
-def write_fields(explore, model_name =""):
+def write_fields(explore, model_name):
 	### First, compile the fields you need for your row
 	explore_name = explore.name
 	explore_model_name = model_name
@@ -138,8 +126,8 @@ def write_fields(explore, model_name =""):
 		w.writerow(rowout)
 
 # ## --------- API Calls -------------
-my_model_name = "BigQuery_Model"
-my_explore_name = "user_interaction"
+my_model_name = "Sales_Orders"
+my_explore_name = "order"
 
 ## -- Get all models --
 models = looker.get_models()
