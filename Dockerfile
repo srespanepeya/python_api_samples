@@ -13,3 +13,8 @@ COPY api.py ./
 EXPOSE 5000
 
 CMD ["python","api.py"]
+
+
+
+# docker run -ti -p 5099:5000 lookerapi
+# docker build -t lookerapi . --rm
