@@ -6,16 +6,15 @@ from peyalookerapi import PeyaLookerApi
 from flask_api import status
 import yaml
 
-host = 'peya-looker'
 f = open('config.yml')
 params = yaml.load(f,Loader=yaml.BaseLoader)
 f.close()
 
-phrase = params['hosts'][host]['secret-phrase']
-mail_server = params['hosts'][host]['mail_server']
-mail_port = params['hosts'][host]['mail_port']
-mail_username = params['hosts'][host]['mail_username']
-mail_password = params['hosts'][host]['mail_password']
+phrase = params['auth']['secret-phrase']
+mail_server = params['smtp']['mail_server']
+mail_port = params['smtp']['mail_port']
+mail_username = params['smtp']['mail_username']
+mail_password = params['smtp']['mail_password']
 
 app = Flask(__name__)
 

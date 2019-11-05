@@ -11,14 +11,13 @@ from lookerapi.rest import ApiException
 
 #from requests.packages.urllib3.exceptions import InsecureRequestWarning
 #requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
-host = 'peya-looker'
 f = open('config.yml')
-params = yaml.load(f,Loader=yaml.BaseLoader)
+conf = yaml.load(f,Loader=yaml.BaseLoader)
 f.close()
 
-my_host = params['hosts'][host]['host']
-my_secret = params['hosts'][host]['secret']
-my_token = params['hosts'][host]['token']
+my_host = conf['looker']['host']
+my_secret = conf['looker']['secret']
+my_token = conf['looker']['token']
 
 
 class PeyaLookerApi(object):
