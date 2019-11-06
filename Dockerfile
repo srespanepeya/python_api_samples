@@ -8,6 +8,7 @@ RUN pip install -r docker-requirements.txt
 
 COPY config.yml ./
 COPY peyalookerapi.py ./
+COPY peyaredshift.py ./
 COPY api.py ./
 
 EXPOSE 5000
