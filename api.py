@@ -6,6 +6,8 @@ from peyalookerapi import PeyaLookerApi
 from peyaredshift import PeyaRedshift
 from flask_api import status
 import yaml
+import json
+
 
 f = open('config.yml')
 params = yaml.load(f,Loader=yaml.BaseLoader)
@@ -73,7 +75,6 @@ def disable_user():
     else:
         return jsonify({'acknowledged':False,'message':'Unauthorized'}), status.HTTP_401_UNAUTHORIZED
 
-
 @app.route("/api/v1/audit/get",methods=['POST'])
 def getAuditState():
     pPhrase = request.headers.get('secret-phrase')
@@ -90,6 +91,91 @@ def getAuditState():
     else:
         return "", status.HTTP_401_UNAUTHORIZED        
 
+def dumper(obj):
+    try:
+        return obj.toJSON()
+    except:
+        return obj.__dict__
+
+@app.route("/api/v1/users/list",methods=['GET'])
+def getAllUsers():
+    pPhrase = request.headers.get('secret-phrase')
+    if phrase == pPhrase:
+        looker = PeyaLookerApi()
+        print('--->looker api initialized')
+        users =looker.get_all_users()
+        res = {"data":[]}
+
+        for u in users:
+            if not u.verified_looker_employee:
+                # print ("#--->{0} - {1} - {2}".format(u.id,u.email,u.is_disabled))
+                res["data"].append(
+                    {
+                        "id": u.id,
+                        "display_name": u.display_name,
+                        "email": u.email,
+                        "is_disabled": u.is_disabled
+                    }
+                )
+
+        print(len(res["data"]))
+
+        print('--->looker users obtained')
+        print('--->{0}'.format(type(res)))
+        return jsonify(res),status.HTTP_200_OK 
+        #return jsonify(user_list),status.HTTP_200_OK 
+        #return app.response_class(res, content_type='application/json'),status.HTTP_200_OK 
+    else:
+        return "", status.HTTP_401_UNAUTHORIZED    
+
+@app.route("/api/v1/schedule/plan/get",methods=['GET'])
+def getSchedulePlan():
+    pPhrase = request.headers.get('secret-phrase')
+    if phrase == pPhrase:
+        if 'id' in request.args:
+            scheduled_plan_id = int(request.args['id'])
+            looker = PeyaLookerApi()
+            sp = looker.getSchedulePlan(scheduled_plan_id)
+
+            res=jsonify({'user_id':sp.user_id,
+                         'scheduled_plan_id':sp.id,
+                         'destinations':[item.address for item in sp.scheduled_plan_destination]})
+
+            print(res)
+            #print(type(sp))
+
+            return res,status.HTTP_200_OK  
+        else: 
+            return jsonify({'acknowledged':False,'message':'Id parameter not specified correctly'}), status.HTTP_400_BAD_REQUEST
+    else:
+        return jsonify({'acknowledged':False,'message':'Unauthorized'}), status.HTTP_401_UNAUTHORIZED
+
+
+@app.route("/api/v1/schedule/plan/delete",methods=['DELETE'])
+def deleteSchedulePlan():
+    pPhrase = request.headers.get('secret-phrase')
+    if phrase == pPhrase:
+        if 'id' in request.args:
+            scheduled_plan_id = int(request.args['id'])
+            looker = PeyaLookerApi()
+            sp = looker.deleteSchedulePlan(scheduled_plan_id)
+
+            res=jsonify({'user_id':sp.user_id,
+                         'scheduled_plan_id':sp.id,
+                         'destinations':[item.address for item in sp.scheduled_plan_destination]})
+
+            print(res)
+            #print(type(sp))
+
+            return res,status.HTTP_200_OK  
+        else: 
+            return jsonify({'acknowledged':False,'message':'Id parameter not specified correctly'}), status.HTTP_400_BAD_REQUEST
+    else:
+        return jsonify({'acknowledged':False,'message':'Unauthorized'}), status.HTTP_401_UNAUTHORIZED
+
+
+
+
 # if __name__ == '__main__':
-app.run(host='0.0.0.0',port=5000)
-# app.run(debug=True)
+app.run(host='0.0.0.0',port=5987)
+app.run(debug=True)

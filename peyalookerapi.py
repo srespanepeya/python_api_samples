@@ -80,3 +80,18 @@ class PeyaLookerApi(object):
         api_response = api_instance.update_user(user_id=userId,body=body)
         return api_response        
 
+    def get_all_users(self):
+        api_instance = looker.UserApi(self.client)
+        api_response = api_instance.all_users(per_page=5)
+        return api_response
+
+    def getSchedulePlan(self, scheduled_plan_id):
+        api_instance = looker.ScheduledPlanApi(self.client)
+        api_response = api_instance.scheduled_plan(scheduled_plan_id=scheduled_plan_id)
+        return api_response
+
+
+    def deleteSchedulePlan(self, scheduled_plan_id):
+        api_instance = looker.ScheduledPlanApi(self.client)
+        api_response = api_instance.delete_scheduled_plan(scheduled_plan_id)
+        return api_response
