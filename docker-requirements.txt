@@ -3,5 +3,5 @@ flask_api
 flask_mail
 requests
 pyyaml
-lookerapi
+lookerapi-deprecated
 psycopg2
