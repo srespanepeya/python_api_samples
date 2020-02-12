@@ -17,13 +17,13 @@ COPY peyaredshift.py ./
 COPY api.py ./
 
 #Recuerdo que debo exponer el puerto ...
-EXPOSE 5000
+EXPOSE 5987
 
 #Comando para ejecutar la api
 CMD ["python","api.py"]
 
 #Docker
 # Para hacer el build:
-# - docker build -t myApi . --rm
+# sudo docker build -t peyabi/looker . --rm
 # Para ejecutar el contenedor:
-# docker run -ti -p 5099:5000 myApi
+# sudo docker run -d -ti -p 5987:5987 peyabi/looker

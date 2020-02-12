@@ -93,5 +93,10 @@ class PeyaLookerApi(object):
 
     def deleteSchedulePlan(self, scheduled_plan_id):
         api_instance = looker.ScheduledPlanApi(self.client)
-        api_response = api_instance.delete_scheduled_plan(scheduled_plan_id)
-        return api_response
+        try:
+            api_response = api_instance.delete_scheduled_plan(scheduled_plan_id)
+            return api_response
+        except ApiException as e:
+            return e
+
+        

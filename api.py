@@ -159,14 +159,9 @@ def deleteSchedulePlan():
             scheduled_plan_id = int(request.args['id'])
             looker = PeyaLookerApi()
             sp = looker.deleteSchedulePlan(scheduled_plan_id)
-
-            res=jsonify({'user_id':sp.user_id,
-                         'scheduled_plan_id':sp.id,
-                         'destinations':[item.address for item in sp.scheduled_plan_destination]})
-
+            print(sp)
+            res=jsonify({'acknowledged':True,'response':sp})
             print(res)
-            #print(type(sp))
-
             return res,status.HTTP_200_OK  
         else: 
             return jsonify({'acknowledged':False,'message':'Id parameter not specified correctly'}), status.HTTP_400_BAD_REQUEST
